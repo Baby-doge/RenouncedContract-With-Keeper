@@ -4,10 +4,11 @@ const { formatEther, parseEther, formatUnits, parseUnits} = require("@ethersproj
 const { Web3Provider } = require("@ethersproject/providers");
 
 
-//test to create lp tokens
-//test to manually call exchange LP
-//test to use keeper to call  
-
+/* ###### 
+All tests are for Kovan Network, 
+for the tests to work you need to replace all 
+the addresses in the smart contract with Kovan addresses 
+   ###### */
 describe("Renounced Contract", function () {
   let owner,
     babyDogeReciver,
@@ -262,63 +263,63 @@ describe("Renounced Contract", function () {
 
   // vvvvvvvvvvvvvvvvvvvv chainlink keeper functions vvvvvvvvvvvvvvvvvvvv 
 
-  it("Should create an instance of the Chainlink token Contract", async function () {
-  // 0xa36085F69e2889c224210F603D836748e7dC0088
-  let ChainLinkAddress = "0xa36085F69e2889c224210F603D836748e7dC0088"
-  chainLinkToken = await ethers.getContractAt("ERC677Token", ChainLinkAddress);
-  await chainLinkToken.deployed();
-  expect(chainLinkToken.address).to.not.equal("")
+  // it("Should create an instance of the Chainlink token Contract", async function () {
+  // // 0xa36085F69e2889c224210F603D836748e7dC0088
+  // let ChainLinkAddress = "0xa36085F69e2889c224210F603D836748e7dC0088"
+  // chainLinkToken = await ethers.getContractAt("ERC677Token", ChainLinkAddress);
+  // await chainLinkToken.deployed();
+  // expect(chainLinkToken.address).to.not.equal("")
 
-  });
+  // });
 
-  it("Should create an instance of the Chainlink Keeper Register Contract", async function () {
+  // it("Should create an instance of the Chainlink Keeper Register Contract", async function () {
 
-      const keeperRegisterAddress = "0x245211139eb8dec0a2a4b4d7dcc21a0f6b1ce863";
-      keeperRegister = await ethers.getContractAt("contracts/test/ChainlinkRegister.sol:UpkeepRegistrationRequests", keeperRegisterAddress);
-      await keeperRegister.deployed();
-      expect(keeperRegister.address).to.not.equal("")
-  });
+  //     const keeperRegisterAddress = "0x245211139eb8dec0a2a4b4d7dcc21a0f6b1ce863";
+  //     keeperRegister = await ethers.getContractAt("contracts/test/ChainlinkRegister.sol:UpkeepRegistrationRequests", keeperRegisterAddress);
+  //     await keeperRegister.deployed();
+  //     expect(keeperRegister.address).to.not.equal("")
+  // });
 
-  it("Should Register Manager contract with keeper Register", async function () {
-  //   function register(
-  //     string memory name,
-  //     bytes calldata encryptedEmail,
-  //     address upkeepContract,
-  //     uint32 gasLimit,
-  //     address adminAddress,
-  //     bytes calldata checkData,
-  //     uint96 amount,
-  //     uint8 source
+  // it("Should Register Manager contract with keeper Register", async function () {
+  // //   function register(
+  // //     string memory name,
+  // //     bytes calldata encryptedEmail,
+  // //     address upkeepContract,
+  // //     uint32 gasLimit,
+  // //     address adminAddress,
+  // //     bytes calldata checkData,
+  // //     uint96 amount,
+  // //     uint8 source
+  // // )
+  // const emptyBytes = '0x00'
+  // const executeGas = "100000"
+  // const source = "100"
+
+  // const abiEncodedBytes = keeperRegister.interface.encodeFunctionData(
+  //   'keeperRegister',
+  //   [
+  //     "BabyDogeManager",
+  //     emptyBytes,
+  //     chainLinkToken.address,
+  //     executeGas,
+  //     owner.address,
+  //     emptyBytes,
+  //     parseEther("60"),
+  //     source
+  //   ],
   // )
-  const emptyBytes = '0x00'
-  const executeGas = "100000"
-  const source = "100"
-
-  const abiEncodedBytes = keeperRegister.interface.encodeFunctionData(
-    'keeperRegister',
-    [
-      "BabyDogeManager",
-      emptyBytes,
-      chainLinkToken.address,
-      executeGas,
-      owner.address,
-      emptyBytes,
-      parseEther("60"),
-      source
-    ],
-  )
   
-  let amount = parseEther("5")
+  // let amount = parseEther("5")
   
-  const tx = await chainLinkToken.transferAndCall(
-    owner.address,
-    amount,
-    abiEncodedBytes,
-  )
+  // const tx = await chainLinkToken.transferAndCall(
+  //   owner.address,
+  //   amount,
+  //   abiEncodedBytes,
+  // )
 
-  expect(tx).to.equal(true)
+  // expect(tx).to.equal(true)
 
-  });
+  // });
   // ^^^^^^^^^^^^^^^^^^^^ chainlink keeper functions ^^^^^^^^^^^^^^^^^^^^
 
   
