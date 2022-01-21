@@ -27,14 +27,27 @@ module.exports = {
   solidity: {
     compilers:[
       {
+        version: "0.6.12",
+        settings: {},
+      },
+      {
         version: "0.7.0",
       },
       {
         version: "0.8.0",
       },
       {
-        version: "0.6.12",
+        version: "0.4.16",
+        settings: {},
       },
+      {
+        version: "0.4.18",
+      },
+      {
+        version: "0.7.6",
+        settings: {},
+      },
+      
     ]
   },
   networks: {
@@ -50,6 +63,8 @@ module.exports = {
       url: process.env.KOVAN_URL || "",
       accounts:
           process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      gas: "auto",
+      gasMultiplier: 2
     },
     bscTestnet: {
       url: process.env.BSC_TEST_URL || "",

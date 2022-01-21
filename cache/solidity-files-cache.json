@@ -1,8 +1,86 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
+    "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/contracts/interfaces/WETH.sol": {
+      "lastModificationDate": 1642694656365,
+      "contentHash": "f8a4ecaee35affe93abe7cd69b6fc0c7",
+      "sourceName": "contracts/interfaces/WETH.sol",
+      "solcConfig": {
+        "version": "0.4.18",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.4.18"
+      ],
+      "artifacts": [
+        "WETH9_"
+      ]
+    },
+    "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/contracts/test/ChainlinkToken.sol": {
+      "lastModificationDate": 1642708324858,
+      "contentHash": "fdfdc893a396aa2951b8cb9d951836a7",
+      "sourceName": "contracts/test/ChainlinkToken.sol",
+      "solcConfig": {
+        "version": "0.4.18",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.4.16"
+      ],
+      "artifacts": [
+        "BasicToken",
+        "ERC20",
+        "ERC20Basic",
+        "ERC677",
+        "ERC677Receiver",
+        "ERC677Token",
+        "LinkToken",
+        "SafeMath",
+        "StandardToken"
+      ]
+    },
     "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/contracts/babydoge.sol": {
-      "lastModificationDate": 1642601615093,
+      "lastModificationDate": 1642705017451,
       "contentHash": "5a46277a58894b18f7e4596db55844a3",
       "sourceName": "contracts/babydoge.sol",
       "solcConfig": {
@@ -43,6 +121,51 @@
         "IUniswapV2Router02",
         "Ownable",
         "SafeMath"
+      ]
+    },
+    "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/contracts/test/ChainlinkRegister.sol": {
+      "lastModificationDate": 1642706297581,
+      "contentHash": "45212721568422566a7d9f6f92ad4765",
+      "sourceName": "contracts/test/ChainlinkRegister.sol",
+      "solcConfig": {
+        "version": "0.7.6",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.7.0",
+        "^0.7.0",
+        "0.7.6",
+        "^0.7.0",
+        "0.7.6"
+      ],
+      "artifacts": [
+        "KeeperRegistryBaseInterface",
+        "KeeperRegistryExecutableInterface",
+        "KeeperRegistryInterface",
+        "LinkTokenInterface",
+        "Owned",
+        "SafeMath96",
+        "UpkeepRegistrationRequests"
       ]
     },
     "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/contracts/interfaces/IERC20.sol": {
@@ -328,8 +451,8 @@
       ]
     },
     "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/contracts/RenouncedContract.sol": {
-      "lastModificationDate": 1642623201240,
-      "contentHash": "b9cc9614fd927dadd3d61e8bf4f116b7",
+      "lastModificationDate": 1642737513935,
+      "contentHash": "9162fde30279f64114a5afb44aa8a296",
       "sourceName": "contracts/RenouncedContract.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -355,54 +478,24 @@
         }
       },
       "imports": [
-        "@openzeppelin/contracts/access/Ownable.sol",
         "@openzeppelin/contracts/token/ERC20/IERC20.sol",
         "contracts/interfaces/IUniswapV2Router02.sol",
-        "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol"
+        "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol",
+        "hardhat/console.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
       ],
       "artifacts": [
-        "BabyDogeBurner",
-        "IWETH"
-      ]
-    },
-    "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
-      "lastModificationDate": 1642540589994,
-      "contentHash": "8398972af73b4e9e5ff3b31cad86234f",
-      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
-      "solcConfig": {
-        "version": "0.8.0",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../utils/Context.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "Ownable"
+        "Address",
+        "BabyDogeManager",
+        "CoinToken",
+        "Context",
+        "IUniswapV2Factory",
+        "IUniswapV2Pair",
+        "IWETH",
+        "Ownable",
+        "SafeMath"
       ]
     },
     "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
@@ -473,41 +566,6 @@
       ],
       "artifacts": [
         "KeeperCompatibleInterface"
-      ]
-    },
-    "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/node_modules/@openzeppelin/contracts/utils/Context.sol": {
-      "lastModificationDate": 1642540590003,
-      "contentHash": "5f2c5c4b6af2dd4551027144797bc8be",
-      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
-      "solcConfig": {
-        "version": "0.8.0",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "Context"
       ]
     },
     "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
@@ -586,10 +644,45 @@
         "ERC20"
       ]
     },
-    "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/contracts/test/CoinToken.sol": {
-      "lastModificationDate": 1642623451129,
+    "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1642540590003,
+      "contentHash": "5f2c5c4b6af2dd4551027144797bc8be",
+      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Context"
+      ]
+    },
+    "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/contracts/test/ERCToken.sol": {
+      "lastModificationDate": 1642706663584,
       "contentHash": "73659129a96b6d27586bddb631de235b",
-      "sourceName": "contracts/test/CoinToken.sol",
+      "sourceName": "contracts/test/ERCToken.sol",
       "solcConfig": {
         "version": "0.8.0",
         "settings": {
@@ -726,6 +819,41 @@
       ],
       "artifacts": [
         "IUniswapV1Factory"
+      ]
+    },
+    "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/node_modules/hardhat/console.sol": {
+      "lastModificationDate": 1642540589908,
+      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
       ]
     }
   }
