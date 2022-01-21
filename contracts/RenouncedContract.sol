@@ -1,18 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-//import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "contracts/interfaces/IUniswapV2Router02.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
-import "hardhat/console.sol";
-//import "./babydoge.sol";
-//0xc748673057861a797275CD8A068AbB95A902e8de babydoge
-//weth 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
-//lp token: 0xc736cA3d9b1E90Af4230BD8F9626528B3D4e0Ee0
-// lp tokens are 18 decimal places
-//once a month
-//set up chainlink keeper
+
 
 abstract contract Context {
     function _msgSender() internal view virtual returns (address) {
@@ -92,21 +84,22 @@ contract Ownable is Context {
 }
 
 contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
-    address public babyDogeAddress;
-    address public lpTokenAddress;
+ 
 
     mapping(address => bool) public whiteListed;
 
-    address public PancakeRouter;
+    address public PancakeRouter = 0x10ED43C718714eb63d5aA57B78B54704E256024E;
     address public bnbReciever;
     address public babyDogeReciever;
-    uint256 public interval = 60; //2629743 month 
+    uint256 public interval = 2629743; //2629743 month 
     uint256 public lastTimestamp;
-    address public immutable WBNB = 0xd0A1E359811322d97991E03f863a0C30C2cF029C; //replace with mainnet later
-    address public immutable registryAddress = 0x4Cb093f226983713164A62138C3F718A5b595F73; //replace with mainnet later 
-
-        /**
-     * @dev Throws if called by any account other than the owner.
+    address public immutable WBNB = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c; 
+    address public immutable registryAddress = 0x7b3EC232b08BD7b4b3305BE0C044D907B2DF960B;  
+    address public babyDogeAddress = 0xc748673057861a797275CD8A068AbB95A902e8de;
+    address public lpTokenAddress = 0xc736cA3d9b1E90Af4230BD8F9626528B3D4e0Ee0;
+    
+    /**
+     * @dev Throws if called by any account other than the Keeper.
      */
     modifier onlyKeeper() {
         require(registryAddress == _msgSender(), "Only Chainlink Keepers can call performUpkeep");
@@ -118,14 +111,8 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
 
     constructor(
         address _bnbReciever,
-        address _babyDogeReciever,
-        address _lpTokenAddress,
-        address _babyDoge,
-        address _router
+        address _babyDogeReciever
     ) public {
-        babyDogeAddress = _babyDoge;
-        lpTokenAddress = _lpTokenAddress;
-        PancakeRouter = _router; //uniswap testnet 
         bnbReciever = _bnbReciever;
         babyDogeReciever = _babyDogeReciever;
 
@@ -138,10 +125,17 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
 
     fallback() external payable {}
 
+    /**
+     * @dev For manually calling the exchange LP Function.
+     */
     function exchangeLP() public onlyOwner {
        _exchangeLP();
+       lastTimestamp = block.timestamp;
     }
 
+   /**
+     * @dev Takes all the LP tokens in the contract and remove the liquidity from the LP Pool, then sends the resulting bnb and babydoge to seperate addresses.
+    */
     function _exchangeLP() internal {
         
         uint256 lpAmount = IERC20(lpTokenAddress).balanceOf(address(this));
@@ -166,11 +160,25 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
 
         IERC20(babyDogeAddress).transfer(babyDogeReciever, babyDogebalance);
 
-        //send bnb
         uint256 bnbBalance = address(this).balance;
 
         payable(bnbReciever).transfer(bnbBalance);
 
+    }
+
+    function emergencyWithdrawLP() public onlyOwner {
+        uint256 lpBalance = IERC20(lpTokenAddress).balanceOf(
+            address(this)
+        );
+        IERC20(lpTokenAddress).transfer(msg.sender, lpBalance);
+    }
+
+
+    function emergencyWithdrawToken(address _tokenAddress) public onlyOwner {
+        uint256 balance = IERC20(_tokenAddress).balanceOf(
+            address(this)
+        );
+        IERC20(_tokenAddress).transfer(msg.sender, balance);
     }
 
     function setRouter(address _router) public onlyOwner {
@@ -197,11 +205,9 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
         interval = _interval;
     }
 
-       function setCountDown() public onlyOwner {
+    function setCountDown() public onlyOwner {
         lastTimestamp = block.timestamp;
     }
-
-    // vvvvvvvvvvvvvvvvvvvv BabyDoge Owner functions vvvvvvvvvvvvvvvvvvvv 
 
     function transferBabyDogeOwnership(address _newOwner)public onlyOwner{
         require(_newOwner != address(0));
@@ -248,27 +254,28 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
         babyDoge.setSwapAndLiquifyEnabled(_enabled);
     }
 
-    //Claims tokens in both BabyDoge and Manager Contract
+    //Claims any stuck tokens that were sent  tokens in both BabyDoge and Manager Contract
     function claimTokensInBoth()public onlyOwner{
         babyDoge.claimTokens();
         payable(_owner).transfer(address(this).balance);
     }
-
-    // ^^^^^^^^^^^^^^^^^^^^ BabyDoge Owner functions ^^^^^^^^^^^^^^^^^^^^
-
-    // vvvvvvvvvvvvvvvvvvvv chainlink keeper functions vvvvvvvvvvvvvvvvvvvv 
+ 
+    /**
+     * @dev ChainLink Keeper function to check if the right conditions have been met to perform upkeep. In this case if enough time has passed then it should return true.
+    */
     function checkUpkeep(bytes calldata /*checkData*/) external override returns (bool upkeepNeeded, bytes memory /* performData */) {
-        upkeepNeeded = block.timestamp - lastTimestamp > interval; // change on actualy deployment to 10k
+        upkeepNeeded = block.timestamp - lastTimestamp > interval; 
         // We don't use the checkData in this example. The checkData is defined when the Upkeep was registered.
     }
-
+    /**
+     * @dev ChainLink Keeper function that will call the _exchangeLP function once enough time has passed and then reset the timer. 
+    */
     function performUpkeep(bytes calldata /*performData*/) external override onlyKeeper {
       
       _exchangeLP();
       lastTimestamp = block.timestamp;
         // We don't use the performData in this example. The performData is generated by the Keeper's call to your checkUpkeep function
     }
-    // ^^^^^^^^^^^^^^^^^^^^ chainlink keeper functions ^^^^^^^^^^^^^^^^^^^^
 
 }
 
