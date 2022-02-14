@@ -191,68 +191,110 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
     }
 
     /**
-     * @dev .
+     * @dev Withdraw all LP Tokens that are currently in the contract and sends them to the owner address.
      */
     function emergencyWithdrawLP() public onlyOwner {
         uint256 lpBalance = IERC20(lpTokenAddress).balanceOf(address(this));
         IERC20(lpTokenAddress).transfer(msg.sender, lpBalance);
     }
 
+    /**
+     * @dev Withdraws the inputed Token that may be stuck in the contract
+     */
     function emergencyWithdrawToken(address _tokenAddress) public onlyOwner {
         uint256 balance = IERC20(_tokenAddress).balanceOf(address(this));
         IERC20(_tokenAddress).transfer(msg.sender, balance);
     }
 
+    /**
+     * @dev Sets the router in the contract
+     */
     function setRouter(address _router) public onlyOwner {
         PancakeRouter = _router;
     }
 
-    //Set at 500 for 5%, 1000 for 10% etc
+    /**
+     * @dev Sets the percent of LP that will go to the community. Input 500 for 5%, 1000 for 10% etc
+     */
     function setCommunityPercent(uint256 _communityPercent) public onlyOwner {
+        require(_communityPercent <= 2000);
         communityPercent = _communityPercent;
     }
 
+    /**
+     * @dev Sets wallet address that the community LP will go to
+     */
     function setCommunityWallet(address _communityWallet) public onlyOwner {
         communityWallet = _communityWallet;
     }
 
+    /**
+     * @dev Sets wallet address that the BNB will go to
+     */
     function setBNBReciever(address _bnbReciever) public onlyOwner {
         bnbReciever = _bnbReciever;
     }
 
+    /**
+     * @dev Sets wallet address that the babydoge will go to
+     */
     function setBabyDogeReciever(address _babyDogeReciever) public onlyOwner {
         babyDogeReciever = _babyDogeReciever;
     }
 
+    /**
+     * @dev Sets address of LP token
+     */
     function setLpTokenAddress(address _lpTokenAddress) public onlyOwner {
         lpTokenAddress = _lpTokenAddress;
     }
 
+    /**
+     * @dev Sets The BabyDogeCoin Address
+     */
     function setBabyDogeAddress(address _babyDogeAddress) public onlyOwner {
         babyDogeAddress = _babyDogeAddress;
     }
 
+    /**
+     * @dev Sets the interval of time that inbetween keeper function calls.
+     */
     function setInterval(uint256 _interval) public onlyOwner {
         interval = _interval;
     }
 
+    /**
+     * @dev reset the countdown to count from this moment
+     */
     function setCountDown() public onlyOwner {
         lastTimestamp = block.timestamp;
     }
 
+    /**
+     * @dev Transfer ownership of this contract to a new owner
+     */
     function transferBabyDogeOwnership(address _newOwner) public onlyOwner {
         require(_newOwner != address(0));
         babyDoge.transferOwnership(_newOwner);
     }
 
+    /**
+     * @dev Calls the Lock function in the babydoge smart contract
+     */
     function lockBabyDoge(uint256 _time) public onlyOwner {
         babyDoge.lock(_time);
     }
 
+    /**
+     * @dev Calls the Lock function in the babydoge smart contract
+     */
     function excludeFromReward(address _account) public onlyOwner {
         babyDoge.excludeFromReward(_account);
     }
 
+    /**
+     * @dev Calls the includeInReward function in the babydoge smart contract
+     */
     function includeInReward(address _account) public onlyOwner {
         babyDoge.includeInReward(_account);
     }
