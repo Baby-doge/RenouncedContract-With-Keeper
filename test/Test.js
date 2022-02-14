@@ -29,7 +29,7 @@ describe("Renounced Contract", function () {
   let wethAddress = "0xd0a1e359811322d97991e03f863a0c30c2cf029c"
   
   it("Should set all the accounts", async function () {
-    [owner, babyDogeReciver, bnbReciever, keeper, addr4, addr5, communityWallet, _] = await ethers.getSigners();
+    [owner, babyDogeReciver, bnbReciever, keeper, addr4, addr5, communityWallet, team, _] = await ethers.getSigners();
   
   });
 
@@ -103,7 +103,7 @@ describe("Renounced Contract", function () {
 
   it("Should deploy the Renounced Contract", async function () {
     const BabyDogeManager = await ethers.getContractFactory("BabyDogeManager");
-    babyDogeManager = await BabyDogeManager.deploy(bnbReciever.address, babyDogeReciver.address, lpToken.address, babyDoge.address, router.address,communityWallet.address, keeper.address );
+    babyDogeManager = await BabyDogeManager.deploy(bnbReciever.address, babyDogeReciver.address, lpToken.address, babyDoge.address, router.address,communityWallet.address, keeper.address, team.address);
     await babyDogeManager.deployed();
     console.log("babyDogeManager Address", babyDogeManager.address);
     expect(babyDogeManager.address).to.not.equal("");

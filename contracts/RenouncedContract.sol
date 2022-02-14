@@ -91,11 +91,12 @@ contract Ownable is Context {
 }
 
 contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
+    using Address for *;
     mapping(address => bool) public whiteListed;
 
     address public PancakeRouter = 0x10ED43C718714eb63d5aA57B78B54704E256024E;
-    address public bnbReciever;
-    address public babyDogeReciever;
+    address public immutable bnbReciever;
+    address public immutable babyDogeReciever;
     uint256 public interval = 2629743; //2629743 month
     uint256 public lastTimestamp;
     address public immutable WBNB = 0xd0A1E359811322d97991E03f863a0C30C2cF029C;
@@ -104,14 +105,14 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
     address public lpTokenAddress = 0xc736cA3d9b1E90Af4230BD8F9626528B3D4e0Ee0;
     address public communityWallet;
     uint256 public communityPercent = 2000;
-
+    address public teamAddress;
     /**
      * @dev Throws if called by any account other than the Keeper.
      */
     modifier onlyKeeper() {
         require(
             registryAddress == _msgSender(),
-            "Only Chainlink Keepers can call performUpkeep"
+            "Only Chainlink Keepers can call this function"
         );
         _;
     }
@@ -126,7 +127,8 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
         address _babyDogeAddress,
         address _router,
         address _communityAddress,
-        address _registryAddress
+        address _registryAddress,
+        address _teamAddress
     ) public {
         bnbReciever = _bnbReciever;
         babyDogeReciever = _babyDogeReciever;
@@ -137,6 +139,7 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
         registryAddress = _registryAddress;
         babyDoge = CoinToken(payable(babyDogeAddress));
         _owner = msg.sender;
+        teamAddress = _teamAddress;
         lastTimestamp = block.timestamp;
     }
 
@@ -217,7 +220,10 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
      * @dev Sets the percent of LP that will go to the community. Input 500 for 5%, 1000 for 10% etc
      */
     function setCommunityPercent(uint256 _communityPercent) public onlyOwner {
-        require(_communityPercent <= 2000);
+        require(
+            _communityPercent <= 2000,
+            "Community Percent cant be more then 20%"
+        );
         communityPercent = _communityPercent;
     }
 
@@ -226,20 +232,6 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
      */
     function setCommunityWallet(address _communityWallet) public onlyOwner {
         communityWallet = _communityWallet;
-    }
-
-    /**
-     * @dev Sets wallet address that the BNB will go to
-     */
-    function setBNBReciever(address _bnbReciever) public onlyOwner {
-        bnbReciever = _bnbReciever;
-    }
-
-    /**
-     * @dev Sets wallet address that the babydoge will go to
-     */
-    function setBabyDogeReciever(address _babyDogeReciever) public onlyOwner {
-        babyDogeReciever = _babyDogeReciever;
     }
 
     /**
