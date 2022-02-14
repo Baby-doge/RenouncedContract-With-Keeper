@@ -451,8 +451,8 @@
       ]
     },
     "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/contracts/RenouncedContract.sol": {
-      "lastModificationDate": 1642780200637,
-      "contentHash": "75fd15a426b94fd3466651389be724b5",
+      "lastModificationDate": 1644861136807,
+      "contentHash": "7330b331842f8b41bdbe6c9e016044fe",
       "sourceName": "contracts/RenouncedContract.sol",
       "solcConfig": {
         "version": "0.8.0",
