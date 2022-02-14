@@ -160,18 +160,18 @@ describe("Renounced Contract", function () {
 
 
   //should fail
-  it("Should Allow keeper to call exchangeLP Function ", async function () {
-    await babyDogeManager.connect(keeper).exchangeLP() 
+  // it("Should Allow keeper to call exchangeLP Function ", async function () {
+  //   await babyDogeManager.connect(keeper).exchangeLP() 
 
-    console.log("BabyDoge Reciever Balance", formatUnits(await babyDoge.balanceOf(babyDogeReciver.address), "9"));
-    console.log("BNB Reciever Balance", formatEther(await ethers.provider.getBalance(bnbReciever.address)));
-    console.log("LP Token Balance of Contract", formatEther(await lpToken.balanceOf(babyDogeManager.address)));
-    console.log("BabyDoge Balance of Pair", formatUnits(await babyDoge.balanceOf(lpToken.address), "9"));
-    console.log("BNB Balance of Pair", formatEther(await ethers.provider.getBalance(lpToken.address)));
+  //   console.log("BabyDoge Reciever Balance", formatUnits(await babyDoge.balanceOf(babyDogeReciver.address), "9"));
+  //   console.log("BNB Reciever Balance", formatEther(await ethers.provider.getBalance(bnbReciever.address)));
+  //   console.log("LP Token Balance of Contract", formatEther(await lpToken.balanceOf(babyDogeManager.address)));
+  //   console.log("BabyDoge Balance of Pair", formatUnits(await babyDoge.balanceOf(lpToken.address), "9"));
+  //   console.log("BNB Balance of Pair", formatEther(await ethers.provider.getBalance(lpToken.address)));
 
-    expect(formatUnits(await babyDoge.balanceOf(babyDogeReciver.address), "9")).to.not.equal("0");
-    expect(formatEther(await ethers.provider.getBalance(bnbReciever.address))).to.not.equal("0");
-  });
+  //   expect(formatUnits(await babyDoge.balanceOf(babyDogeReciver.address), "9")).to.not.equal("0");
+  //   expect(formatEther(await ethers.provider.getBalance(bnbReciever.address))).to.not.equal("0");
+  // });
 
   it("Should be able to transfer ownership of babydoge to babyDogeManager", async function () {
     await babyDoge.transferOwnership(babyDogeManager.address)

@@ -118,6 +118,7 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
 
     CoinToken babyDoge;
 
+    // inputs will be static and immutable for mainnet deployment
     constructor(
         address _bnbReciever,
         address _babyDogeReciever,
@@ -186,9 +187,12 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
 
         uint256 bnbBalance = address(this).balance;
 
-        payable(bnbReciever).transfer(bnbBalance);
+        payable(bnbReciever).sendValue(bnbBalance);
     }
 
+    /**
+     * @dev .
+     */
     function emergencyWithdrawLP() public onlyOwner {
         uint256 lpBalance = IERC20(lpTokenAddress).balanceOf(address(this));
         IERC20(lpTokenAddress).transfer(msg.sender, lpBalance);
@@ -287,7 +291,7 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
     //Claims any stuck tokens that were sent  tokens in both BabyDoge and Manager Contract
     function claimTokensInBoth() public onlyOwner {
         babyDoge.claimTokens();
-        payable(_owner).transfer(address(this).balance);
+        payable(_owner).sendValue(address(this).balance);
     }
 
     /**
