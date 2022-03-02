@@ -72,16 +72,16 @@ async function main() {
 
   //vvvvvvvvvvvvvv deploy Renounced Contract vvvvvvvvvvvvvv
 
-  let babyDogeBurner;
+  // let babyDogeBurner;
 
-  const BabyDogeBurner = await ethers.getContractFactory("BabyDogeManager");
-  babyDogeBurner = await BabyDogeBurner.deploy("0x375CDCB6018f4c24C6380c72AdF4328baBD914Ba", "0x37F023116F67323821b0b523E935071Fb5603f9b", "0x247597def02aaabc294dc36aca4469301cb820dd", babyDogeAddress, uniswapRouter);
-  await babyDogeBurner.deployed();
-  console.log("babyDogeBurner deployed to:", babyDogeBurner.address);
+  // const BabyDogeBurner = await ethers.getContractFactory("BabyDogeManager");
+  // babyDogeBurner = await BabyDogeBurner.deploy("0x375CDCB6018f4c24C6380c72AdF4328baBD914Ba", "0x37F023116F67323821b0b523E935071Fb5603f9b", "0x247597def02aaabc294dc36aca4469301cb820dd", babyDogeAddress, uniswapRouter, uniswapRouter,uniswapRouter,uniswapRouter);
+  // await babyDogeBurner.deployed();
+  // console.log("babyDogeBurner deployed to:", babyDogeBurner.address);
 
-  //babyDogeBurner = await ethers.getContractAt("0x375CDCB6018f4c24C6380c72AdF4328baBD914Ba", "0x37F023116F67323821b0b523E935071Fb5603f9b", "0x85d30747868a5081f53BC7B9450301e761620a4f", "0x85d30747868a5081f53BC7B9450301e761620a4f", babyDoge.address, uniswapRouter);
+  // //babyDogeBurner = await ethers.getContractAt("0x375CDCB6018f4c24C6380c72AdF4328baBD914Ba", "0x37F023116F67323821b0b523E935071Fb5603f9b", "0x85d30747868a5081f53BC7B9450301e761620a4f", "0x85d30747868a5081f53BC7B9450301e761620a4f", babyDoge.address, uniswapRouter);
 
-  await delay(30000);
+  // await delay(30000);
 
   try {
     // await hre.run("verify:verify", {
@@ -97,8 +97,8 @@ async function main() {
     // });
 
     await hre.run("verify:verify", {
-      address: "0x179560e44f1DadA61e429ff09D5DEC4B1bC5dBa7",
-      constructorArguments: ["0x375CDCB6018f4c24C6380c72AdF4328baBD914Ba", "0x37F023116F67323821b0b523E935071Fb5603f9b", "0x247597def02aaabc294dc36aca4469301cb820dd", babyDogeAddress, uniswapRouter]
+      address: "0x7D0Ccf603b332c6B7058D2E7246a4b380F320803",
+      constructorArguments: ["0x375CDCB6018f4c24C6380c72AdF4328baBD914Ba", "0x37F023116F67323821b0b523E935071Fb5603f9b", "0x247597def02aaabc294dc36aca4469301cb820dd", babyDogeAddress, uniswapRouter,uniswapRouter,uniswapRouter,uniswapRouter]
     });
   } catch (e) {
     console.log(e);
