@@ -118,7 +118,7 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
     }
 
     /**
-     * @dev Throws if called by any account other than the Keeper.
+     * @dev Throws if called by any account other than the Team address.
      */
     modifier onlyTeam() {
         require(
