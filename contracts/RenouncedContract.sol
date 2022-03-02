@@ -235,7 +235,7 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
 
     /**
      * @dev allows the babydoge team to call the includeInFee function in the babydoge smart contract
-     can be set to zero address 
+     can be set to zero address for the dao to remove all owners
      */
     function setTeamAddress(address _teamAddress) public onlyOwner {
         teamAddress = _teamAddress;

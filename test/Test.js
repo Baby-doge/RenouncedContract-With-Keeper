@@ -251,6 +251,16 @@ describe("Renounced Contract", function () {
   });
   
 
+  it("Team Should be able to call the teamExcludeFromReward", async function () {
+    await babyDogeManager.connect(team).teamExcludeFromReward(addr5.address);
+    
+    await babyDogeManager.connect(team).teamIncludeInReward(addr5.address);
+    await babyDogeManager.connect(team).teamExcludeFromFee(addr5.address);
+    await babyDogeManager.connect(team).teamIncludeInFee(addr5.address);
+  });
+
+
+
   it("Should be able to transfer ownership of babydoge back to owner", async function () {
     await babyDogeManager.transferBabyDogeOwnership(owner.address)
     expect(await babyDoge.owner()).to.equal(owner.address);
@@ -262,6 +272,11 @@ describe("Renounced Contract", function () {
 
     expect(isExcluded).to.equal(false);
   });
+
+
+  //Team Functions'
+
+
 
   // ^^^^^^^^^^^^^^^^^^^^ BabyDoge Owner functions ^^^^^^^^^^^^^^^^^^^^
 
