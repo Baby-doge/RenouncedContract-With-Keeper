@@ -6,7 +6,7 @@ require("@nomiclabs/hardhat-etherscan");
 require("@nomiclabs/hardhat-waffle");
 require("hardhat-gas-reporter");
 require("solidity-coverage");
-
+require("hardhat-contract-sizer");
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
@@ -24,8 +24,8 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  solidity: {    
-    compilers:[
+  solidity: {
+    compilers: [
       {
         version: "0.6.12",
         settings: {},
@@ -37,9 +37,10 @@ module.exports = {
         version: "0.8.0",
         settings: {
           optimizer: {
-          enabled: true,
-          runs: 200,
-        },}
+            enabled: true,
+            runs: 200,
+          },
+        },
       },
       {
         version: "0.4.16",
@@ -52,13 +53,12 @@ module.exports = {
         version: "0.7.6",
         settings: {},
       },
-      
-    ]
+    ],
   },
   networks: {
     hardhat: {
       forking: {
-        url:"https://eth-kovan.alchemyapi.io/v2/hgg9sqqk3OUtWTDjzbKY1FKMNIALjl4H",
+        url: "https://eth-kovan.alchemyapi.io/v2/hgg9sqqk3OUtWTDjzbKY1FKMNIALjl4H",
         //process.env.KOVAN_URL, // must be archive node for next line to work
         //blockNumber: 29345600, // block pinning gives x20 perfromance due to caching as stated on hardhat docs
         enabled: true,
@@ -67,24 +67,24 @@ module.exports = {
     kovan: {
       url: process.env.KOVAN_URL || "",
       accounts:
-          process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
       gas: "auto",
-      gasMultiplier: 2
+      gasMultiplier: 2,
     },
     bscTestnet: {
       url: process.env.BSC_TEST_URL || "",
       accounts:
-          process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     bsc: {
       url: process.env.BSC_MAINNET_URL || "",
       accounts:
-          process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     rinkeby: {
       url: process.env.RINKEBY_URL || "",
       accounts:
-          process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
   },
   gasReporter: {
@@ -93,5 +93,11 @@ module.exports = {
   },
   etherscan: {
     apiKey: process.env.BSCSCAN_API_KEY,
+  },
+  contractSizer: {
+    alphaSort: true,
+    disambiguatePaths: false,
+    runOnCompile: true,
+    strict: true,
   },
 };

@@ -80,8 +80,8 @@
       ]
     },
     "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/contracts/babydoge.sol": {
-      "lastModificationDate": 1642705017451,
-      "contentHash": "5a46277a58894b18f7e4596db55844a3",
+      "lastModificationDate": 1648578525247,
+      "contentHash": "6a46410da43f97662da9b19121539569",
       "sourceName": "contracts/babydoge.sol",
       "solcConfig": {
         "version": "0.6.12",
@@ -108,7 +108,7 @@
       },
       "imports": [],
       "versionPragmas": [
-        "^0.6.12"
+        "0.6.12"
       ],
       "artifacts": [
         "Address",
@@ -451,8 +451,8 @@
       ]
     },
     "/Users/ebrahimelbagory/Documents/GitHub/RenouncedContract/contracts/RenouncedContract.sol": {
-      "lastModificationDate": 1646251200071,
-      "contentHash": "16053a8b36a7cc13db50554856243230",
+      "lastModificationDate": 1648653194604,
+      "contentHash": "78131a34911f0de811688d8f9ad60f31",
       "sourceName": "contracts/RenouncedContract.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -483,7 +483,7 @@
         "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol"
       ],
       "versionPragmas": [
-        "^0.8.0"
+        "0.8.0"
       ],
       "artifacts": [
         "Address",

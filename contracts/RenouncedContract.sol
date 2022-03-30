@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "contracts/interfaces/IUniswapV2Router02.sol";
@@ -92,8 +92,7 @@ contract Ownable is Context {
 
 contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
     using Address for *;
-    mapping(address => bool) public whiteListed;
-
+    
     address public PancakeRouter = 0x10ED43C718714eb63d5aA57B78B54704E256024E;
     address public immutable bnbReciever;
     address public immutable babyDogeReciever;
@@ -106,6 +105,7 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
     address public communityWallet;
     uint256 public communityPercent = 2000;
     address public teamAddress;
+
     /**
      * @dev Throws if called by any account other than the Keeper.
      */
@@ -127,6 +127,15 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
         );
         _;
     }
+
+    event SetTeamAddress(address indexed teamAddress);
+    event EmergencyWithdrawLP(uint256 amount);
+    event EmergencyWithdrawTokens(uint256 tokensToSell);
+    event SetCommunityPercent(uint256 communityPercent);
+    event SetCommunityWallet(address indexed communityWallet);
+    event SetLpTokenAddress(address indexed lpTokenAddress);
+    event SetBabyDogeAddress(address indexed babyDogeAddress);
+    event ClaimTokensInBoth(uint256 amountClaimed);
 
     CoinToken babyDoge;
 
@@ -161,7 +170,7 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
     /**
      * @dev For manually calling the exchange LP Function.
      */
-    function exchangeLP() public onlyOwner {
+    function exchangeLP() external onlyOwner {
         _exchangeLP();
         lastTimestamp = block.timestamp;
     }
@@ -208,28 +217,28 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
     /**
      * @dev allows the babydoge team to call the excludeFromReward function in the babydoge smart contract
      */
-    function teamExcludeFromReward(address _account) public onlyTeam {
+    function teamExcludeFromReward(address _account) external onlyTeam {
         babyDoge.excludeFromReward(_account);
     }
 
     /**
      * @dev allows the babydoge team to call the includeInReward function in the babydoge smart contract
      */
-    function teamIncludeInReward(address _account) public onlyTeam {
+    function teamIncludeInReward(address _account) external onlyTeam {
         babyDoge.includeInReward(_account);
     }
 
     /**
      * @dev allows the babydoge team to call the excludeFromFee function in the babydoge smart contract
      */
-    function teamExcludeFromFee(address _account) public onlyTeam {
+    function teamExcludeFromFee(address _account) external onlyTeam {
         babyDoge.excludeFromFee(_account);
     }
 
     /**
      * @dev allows the babydoge team to call the includeInFee function in the babydoge smart contract
      */
-    function teamIncludeInFee(address _account) public onlyTeam {
+    function teamIncludeInFee(address _account) external onlyTeam {
         babyDoge.includeInFee(_account);
     }
 
@@ -237,83 +246,90 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
      * @dev allows the babydoge team to call the includeInFee function in the babydoge smart contract
      can be set to zero address for the dao to remove all owners
      */
-    function setTeamAddress(address _teamAddress) public onlyOwner {
+    function setTeamAddress(address _teamAddress) external onlyOwner {
         teamAddress = _teamAddress;
+        emit SetTeamAddress(_teamAddress);
     }
 
     /**
      * @dev Withdraw all LP Tokens that are currently in the contract and sends them to the caller address.
      */
-    function emergencyWithdrawLP() public onlyOwner {
+    function emergencyWithdrawLP() external onlyOwner {
         uint256 lpBalance = IERC20(lpTokenAddress).balanceOf(address(this));
         IERC20(lpTokenAddress).transfer(msg.sender, lpBalance);
+        emit EmergencyWithdrawLP(lpBalance);
     }
 
     /**
      * @dev Withdraws the inputed Token that may be stuck in the contract
      */
-    function emergencyWithdrawToken(address _tokenAddress) public onlyOwner {
+    function emergencyWithdrawToken(address _tokenAddress) external onlyOwner {
         uint256 balance = IERC20(_tokenAddress).balanceOf(address(this));
         IERC20(_tokenAddress).transfer(msg.sender, balance);
+        emit EmergencyWithdrawTokens(balance);
     }
 
     /**
      * @dev Sets the router in the contract
      */
-    function setRouter(address _router) public onlyOwner {
+    function setRouter(address _router) external onlyOwner {
         PancakeRouter = _router;
     }
 
     /**
      * @dev Sets the percent of LP that will go to the community. Input 500 for 5%, 1000 for 10% etc
      */
-    function setCommunityPercent(uint256 _communityPercent) public onlyOwner {
+    function setCommunityPercent(uint256 _communityPercent) external onlyOwner {
         require(
             _communityPercent <= 2000,
             "Community Percent cant be more then 20%"
         );
         communityPercent = _communityPercent;
+        emit SetCommunityPercent(_communityPercent);
     }
 
     /**
      * @dev Sets wallet address that the community LP will go to
      */
-    function setCommunityWallet(address _communityWallet) public onlyOwner {
+    function setCommunityWallet(address _communityWallet) external onlyOwner {
         communityWallet = _communityWallet;
+        emit SetCommunityWallet(_communityWallet);
     }
 
     /**
      * @dev Sets address of LP token
      */
-    function setLpTokenAddress(address _lpTokenAddress) public onlyOwner {
+    function setLpTokenAddress(address _lpTokenAddress) external onlyOwner {
         lpTokenAddress = _lpTokenAddress;
+        emit SetLpTokenAddress(_lpTokenAddress);
     }
 
     /**
      * @dev Sets The BabyDogeCoin Address
      */
-    function setBabyDogeAddress(address _babyDogeAddress) public onlyOwner {
+    function setBabyDogeAddress(address _babyDogeAddress) external onlyOwner {
         babyDogeAddress = _babyDogeAddress;
+        emit SetBabyDogeAddress(_babyDogeAddress);
     }
 
     /**
      * @dev Sets the interval of time that inbetween keeper function calls.
      */
-    function setInterval(uint256 _interval) public onlyOwner {
+    function setInterval(uint256 _interval) external onlyOwner {
         interval = _interval;
     }
 
     /**
      * @dev reset the countdown to count from this moment
      */
-    function setCountDown() public onlyOwner {
+    function setCountDown() external onlyOwner {
         lastTimestamp = block.timestamp;
     }
 
     /**
      * @dev Transfer ownership of this contract to a new owner
      */
-    function transferBabyDogeOwnership(address _newOwner) public onlyOwner {
+    function transferBabyDogeOwnership(address _newOwner) external onlyOwner {
         require(_newOwner != address(0));
         babyDoge.transferOwnership(_newOwner);
     }
@@ -321,82 +337,96 @@ contract BabyDogeManager is Ownable, KeeperCompatibleInterface {
     /**
      * @dev Calls the Lock function in the babydoge smart contract
      */
-    function lockBabyDoge(uint256 _time) public onlyOwner {
+    function lockBabyDoge(uint256 _time) external onlyOwner {
         babyDoge.lock(_time);
+        
+
     }
 
     /**
      * @dev Calls the excludeFromReward function in the babydoge smart contract
      */
-    function excludeFromReward(address _account) public onlyOwner {
+    function excludeFromReward(address _account) external onlyOwner {
         babyDoge.excludeFromReward(_account);
+       
     }
 
     /**
      * @dev Calls the includeInReward function in the babydoge smart contract
      */
-    function includeInReward(address _account) public onlyOwner {
+    function includeInReward(address _account) external onlyOwner {
         babyDoge.includeInReward(_account);
+       
+
     }
 
     /**
      * @dev Calls the excludeFromFee function in the babydoge smart contract
      */
-    function excludeFromFee(address _account) public onlyOwner {
+    function excludeFromFee(address _account) external onlyOwner {
         babyDoge.excludeFromFee(_account);
+       
+
     }
 
     /**
      * @dev Calls the includeInFee function in the babydoge smart contract
      */
-    function includeInFee(address _account) public onlyOwner {
+    function includeInFee(address _account) external onlyOwner {
         babyDoge.includeInFee(_account);
+        
+
     }
 
     /**
      * @dev Calls the setTaxFeePercent function in the babydoge smart contract
      */
-    function setTaxFeePercent(uint256 _taxFee) public onlyOwner {
+    function setTaxFeePercent(uint256 _taxFee) external onlyOwner {
         babyDoge.setTaxFeePercent(_taxFee);
     }
 
     /**
      * @dev Calls the setLiquidityFeePercent function in the babydoge smart contract
      */
-    function setLiquidityFeePercent(uint256 _liquidityFee) public onlyOwner {
+    function setLiquidityFeePercent(uint256 _liquidityFee) external onlyOwner {
         babyDoge.setLiquidityFeePercent(_liquidityFee);
+   
     }
 
     /**
      * @dev Calls the setNumTokensSellToAddToLiquidity function in the babydoge smart contract
      */
     function setNumTokensSellToAddToLiquidity(uint256 _swapNumber)
-        public
+        external
         onlyOwner
     {
         babyDoge.setNumTokensSellToAddToLiquidity(_swapNumber);
+       
     }
 
     /**
      * @dev Calls the setMaxTxPercent function in the babydoge smart contract
      */
-    function setMaxTxPercent(uint256 _maxTxPercent) public onlyOwner {
+    function setMaxTxPercent(uint256 _maxTxPercent) external onlyOwner {
         babyDoge.setMaxTxPercent(_maxTxPercent);
+      
     }
 
     /**
      * @dev Calls the setSwapAndLiquifyEnabled function in the babydoge smart contract
      */
-    function setSwapAndLiquifyEnabled(bool _enabled) public onlyOwner {
+    function setSwapAndLiquifyEnabled(bool _enabled) external onlyOwner {
         babyDoge.setSwapAndLiquifyEnabled(_enabled);
+      
     }
 
     /**
      * @dev Claims any stuck tokens that were sent  tokens in both BabyDoge and Manager Contract
      */
-    function claimTokensInBoth() public onlyOwner {
+    function claimTokensInBoth() external onlyOwner {
         babyDoge.claimTokens();
         payable(_owner).sendValue(address(this).balance);
+        emit ClaimTokensInBoth(address(this).balance);
     }
 
     /**
